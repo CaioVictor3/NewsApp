@@ -12,6 +12,13 @@ namespace NewsApp.Application.Models.Usuario
     {
         public int IdUsuario { get; set; }
         public string Nome { get; set; }
+        public string Login { get; set; }
+        public string Email { get; set; }
+        public string Cpf { get; set; }
+        public DateTime? DataNascimento { get; set; }
+        public string Endereco { get; set; }
+        public string TipoUsuario { get; set; }
+        public string Situacao { get; set; }
     }
 
     public class AlterarSenhaResponseModel { }

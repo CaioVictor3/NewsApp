@@ -78,16 +78,54 @@ namespace NewsApp.Application.Services
 
             retorno.Data.IdUsuario = usuario.IdUsuario;
             retorno.Data.Nome = usuario.Nome;
+            retorno.Data.Login = usuario.Login;
+            retorno.Data.Email = usuario.Email;
+            retorno.Data.Cpf = usuario.CPF;
+            retorno.Data.DataNascimento = usuario.DataNascimento;
+            retorno.Data.Endereco = usuario.Endereco;
+            retorno.Data.TipoUsuario = usuario.TipoUsuario;
+            retorno.Data.Situacao = usuario.Situacao;
             retorno.Success = true;
             retorno.Message = "Usuário cadastrado com sucesso.";
-
             return retorno;
         }
 
         public Task<Response<AlterarSenhaResponseModel>?> AlterarSenhaAsync(int idUsuario, string senha, string confirmarSenha, string usuarioAlteracao) => throw new NotImplementedException();
         public Task<Response<EsqueceuSenhaResponseModel>?> EsqueceuSenhaAsync(EsqueceuSenhaRequestModel model) => throw new NotImplementedException();
         public Task<Response<UsuarioListResponseModel>?> ListarUsuariosAsync() => throw new NotImplementedException();
-        public Task<Response<UsuarioResponseModel>?> ObterPorIdAsync(int id) => throw new NotImplementedException();
+
+        public async Task<Response<UsuarioResponseModel>?> ObterPorIdAsync(int id)
+        {
+            var retorno = new Response<UsuarioResponseModel>()
+            {
+                Data = new UsuarioResponseModel()
+            };
+
+            if (id <= 0)
+                throw new ServiceException("Usuário inválido.");
+
+            var usuario = await _context.Usuario
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.IdUsuario == id && x.Situacao != "Excluido");
+
+            if (usuario == null)
+                throw new ServiceException("Usuário não encontrado.");
+
+            retorno.Data.IdUsuario = usuario.IdUsuario;
+            retorno.Data.Nome = usuario.Nome;
+            retorno.Data.Login = usuario.Login;
+            retorno.Data.Email = usuario.Email;
+            retorno.Data.Cpf = usuario.CPF;
+            retorno.Data.DataNascimento = usuario.DataNascimento;
+            retorno.Data.Endereco = usuario.Endereco;
+            retorno.Data.TipoUsuario = usuario.TipoUsuario;
+            retorno.Data.Situacao = usuario.Situacao;
+            retorno.Success = true;
+            retorno.Message = "Usuário obtido com sucesso.";
+
+            return retorno;
+        }
+
         public Task<Response<UsuarioResponseModel>?> AtivarUsuarioAsync(int idUsuario, string situacao, string usuarioAlteracao) => throw new NotImplementedException();
         public Task<Response<UsuarioResponseModel>?> InativarUsuarioAsync(int idUsuario, string situacao, string usuarioAlteracao) => throw new NotImplementedException();
         public Task<Response<UsuarioResponseModel>?> CriarUsuarioAsync(CriarUsuarioRequestModel request) => throw new NotImplementedException();
