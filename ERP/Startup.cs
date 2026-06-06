@@ -38,6 +38,7 @@ namespace WebApplication1
             services.AddHttpContextAccessor();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IComentarioService, ComentarioService>();
+            services.AddScoped<INoticiaService, NoticiaService>();
             #endregion
 
             // Token JWT

@@ -10,6 +10,7 @@ namespace ERP_Domain
         public int IdUsuario { get; set; }
         public Usuario Usuario { get; set; }
         public int IdNoticia { get; set; }
+        public Noticia Noticia { get; set; }
 
         public Comentario() { }
 

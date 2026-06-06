@@ -19,6 +19,10 @@ namespace ERP_Infra.Mapping
             builder.HasOne(c => c.Usuario)
                 .WithMany()
                 .HasForeignKey(c => c.IdUsuario);
+
+            builder.HasOne(c => c.Noticia)
+                .WithMany()
+                .HasForeignKey(c => c.IdNoticia);
         }
     }
 }

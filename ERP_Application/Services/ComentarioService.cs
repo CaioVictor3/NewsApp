@@ -25,6 +25,10 @@ namespace ERP_Application.Services
             if (!usuarioExiste)
                 throw new ServiceException("Usuário não encontrado.");
 
+            var noticiaExiste = await _context.Noticia.AnyAsync(x => x.IdNoticia == request.IdNoticia && x.Situacao != "Excluido");
+            if (!noticiaExiste)
+                throw new ServiceException("Notícia não encontrada.");
+
             var comentario = new Comentario(request.IdUsuario, request.IdNoticia, request.Comentario);
 
             _context.Comentario.Add(comentario);
@@ -62,7 +66,14 @@ namespace ERP_Application.Services
                 .AsNoTracking()
                 .Where(x => x.IdNoticia == idNoticia && x.Situacao != "Excluido")
                 .OrderByDescending(x => x.DataComentario)
-                .Select(x => MapearComentario(x))
+                .Select(x => new ComentarioResponseModel
+                {
+                    IdComentario = x.IdComentario,
+                    Comentario = x.Conteudo,
+                    IdUsuario = x.IdUsuario,
+                    IdNoticia = x.IdNoticia,
+                    DataComentario = x.DataComentario
+                })
                 .ToListAsync();
 
             return new Response<ListarComentarioResponseModel>
