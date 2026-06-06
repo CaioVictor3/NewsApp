@@ -19,48 +19,59 @@ namespace NewsApp.Application.Services
 
         public async Task<Response<ComentarioResponseModel>?> CriarComentarioAsync(CriarComentarioRequestModel request)
         {
+            var retorno = new Response<ComentarioResponseModel>()
+            {
+                Data = new ComentarioResponseModel()
+            };
+
             ValidarRequest(request.IdUsuario, request.IdNoticia, request.Comentario);
 
             var usuarioExiste = await _context.Usuario.AnyAsync(x => x.IdUsuario == request.IdUsuario);
             if (!usuarioExiste)
-                throw new ServiceException("Usuário não encontrado.");
+                throw new Exception("Usuário não encontrado.");
 
             var noticiaExiste = await _context.Noticia.AnyAsync(x => x.IdNoticia == request.IdNoticia && x.Situacao != "Excluido");
             if (!noticiaExiste)
-                throw new ServiceException("Notícia não encontrada.");
+                throw new Exception("Notícia não encontrada.");
 
             var comentario = new Comentario(request.IdUsuario, request.IdNoticia, request.Comentario);
 
             _context.Comentario.Add(comentario);
             await _context.SaveChangesAsync();
 
-            return new Response<ComentarioResponseModel>
-            {
-                Data = MapearComentario(comentario),
-                Success = true,
-                Message = "Comentário criado com sucesso."
-            };
+            retorno.Data = MapearComentario(comentario);
+            retorno.Success = true;
+            retorno.Message = "Comentário criado com sucesso.";
+            return retorno;
         }
 
         public async Task<Response<ComentarioResponseModel>?> ExcluirComentarioAsync(int idComentario)
         {
+            var retorno = new Response<ComentarioResponseModel>()
+            {
+                Data = new ComentarioResponseModel()
+            };
+
             var comentario = await ObterComentarioAtivoAsync(idComentario);
 
             comentario.Remover("Sistema");
             await _context.SaveChangesAsync();
 
-            return new Response<ComentarioResponseModel>
-            {
-                Data = MapearComentario(comentario),
-                Success = true,
-                Message = "Comentário excluído com sucesso."
-            };
+            retorno.Data = MapearComentario(comentario);
+            retorno.Success = true;
+            retorno.Message = "Comentário excluído com sucesso.";
+            return retorno;
         }
 
         public async Task<Response<ListarComentarioResponseModel>?> ListarComentarioPorNoticiaAsync(int idNoticia)
         {
+            var retorno = new Response<ListarComentarioResponseModel>()
+            {
+                Data = new ListarComentarioResponseModel()
+            };
+
             if (idNoticia <= 0)
-                throw new ServiceException("Notícia inválida.");
+                throw new Exception("Notícia inválida.");
 
             var comentarios = await _context.Comentario
                 .AsNoTracking()
@@ -76,55 +87,60 @@ namespace NewsApp.Application.Services
                 })
                 .ToListAsync();
 
-            return new Response<ListarComentarioResponseModel>
+            foreach (var comentario in comentarios)
             {
-                Data = new ListarComentarioResponseModel { Lista = comentarios },
-                Success = true,
-                Message = "Comentários listados com sucesso."
-            };
+                retorno.Data.Lista.Add(comentario);
+            }
+
+            retorno.Success = true;
+            retorno.Message = "Comentários listados com sucesso.";
+            return retorno;
         }
 
         public async Task<Response<ComentarioResponseModel>?> AtualizarComentarioAsync(AtualizarComentarioRequestModel request)
         {
+            var retorno = new Response<ComentarioResponseModel>()
+            {
+                Data = new ComentarioResponseModel()
+            };
+
             ValidarRequest(request.IdUsuario, request.IdNoticia, request.Comentario);
 
             var comentario = await ObterComentarioAtivoAsync(request.IdComentario);
             if (comentario.IdUsuario != request.IdUsuario || comentario.IdNoticia != request.IdNoticia)
-                throw new ServiceException("Comentário não encontrado para o usuário e notícia informados.");
+                throw new Exception("Comentário não encontrado para o usuário e notícia informados.");
 
             comentario.Atualizar(request.Comentario, "Sistema");
             await _context.SaveChangesAsync();
 
-            return new Response<ComentarioResponseModel>
-            {
-                Data = MapearComentario(comentario),
-                Success = true,
-                Message = "Comentário atualizado com sucesso."
-            };
+            retorno.Data = MapearComentario(comentario);
+            retorno.Success = true;
+            retorno.Message = "Comentário atualizado com sucesso.";
+            return retorno;
         }
 
         private static void ValidarRequest(int idUsuario, int idNoticia, string comentario)
         {
             if (idUsuario <= 0)
-                throw new ServiceException("Usuário inválido.");
+                throw new Exception("Usuário inválido.");
 
             if (idNoticia <= 0)
-                throw new ServiceException("Notícia inválida.");
+                throw new Exception("Notícia inválida.");
 
             if (string.IsNullOrWhiteSpace(comentario))
-                throw new ServiceException("Comentário é obrigatório.");
+                throw new Exception("Comentário é obrigatório.");
         }
 
         private async Task<Comentario> ObterComentarioAtivoAsync(int idComentario)
         {
             if (idComentario <= 0)
-                throw new ServiceException("Comentário inválido.");
+                throw new Exception("Comentário inválido.");
 
             var comentario = await _context.Comentario
                 .FirstOrDefaultAsync(x => x.IdComentario == idComentario && x.Situacao != "Excluido");
 
             if (comentario == null)
-                throw new ServiceException("Comentário não encontrado.");
+                throw new Exception("Comentário não encontrado.");
 
             return comentario;
         }

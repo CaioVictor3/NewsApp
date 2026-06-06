@@ -31,28 +31,38 @@ namespace NewsApp.Application.Services
 
         public async Task<Response<SincronizarNoticiasResponseModel>?> BuscarNoticiasDaNewsApiESalvarNoBancoAsync(int page = 1, int pageSize = PageSizePadrao)
         {
+            var retorno = new Response<SincronizarNoticiasResponseModel>()
+            {
+                Data = new SincronizarNoticiasResponseModel()
+            };
+
             ValidarParametrosDePaginacao(page, pageSize);
 
             var noticiasDaNewsApi = await BuscarNoticiasNaNewsApiAsync(page, pageSize);
             var artigosValidosRetornadosPelaNewsApi = FiltrarArtigosValidosParaCadastro(noticiasDaNewsApi.Articles);
             var noticiasSalvas = await SalvarSomenteNoticiasAindaNaoCadastradasAsync(artigosValidosRetornadosPelaNewsApi);
 
-            return new Response<SincronizarNoticiasResponseModel>
+            retorno.Data.TotalResultadosEncontradosNaNewsApi = noticiasDaNewsApi.TotalResults;
+            retorno.Data.QuantidadeNoticiasRetornadasNaPaginaAtual = noticiasDaNewsApi.Articles.Count;
+            retorno.Data.QuantidadeNoticiasSalvasNoBanco = noticiasSalvas.Count;
+
+            foreach (var noticiaSalva in noticiasSalvas)
             {
-                Success = true,
-                Message = "Notícias sincronizadas com sucesso.",
-                Data = new SincronizarNoticiasResponseModel
-                {
-                    TotalResultadosEncontradosNaNewsApi = noticiasDaNewsApi.TotalResults,
-                    QuantidadeNoticiasRetornadasNaPaginaAtual = noticiasDaNewsApi.Articles.Count,
-                    QuantidadeNoticiasSalvasNoBanco = noticiasSalvas.Count,
-                    Noticias = noticiasSalvas.Select(MapearNoticiaParaResumoResponse).ToList()
-                }
-            };
+                retorno.Data.Noticias.Add(MapearNoticiaParaResumoResponse(noticiaSalva));
+            }
+
+            retorno.Success = true;
+            retorno.Message = "Notícias sincronizadas com sucesso.";
+            return retorno;
         }
 
         public async Task<Response<ListarNoticiaResponseModel>?> ListarNoticiasSalvasNoBancoAsync(int page = 1, int pageSize = PageSizePadrao)
         {
+            var retorno = new Response<ListarNoticiaResponseModel>()
+            {
+                Data = new ListarNoticiaResponseModel()
+            };
+
             ValidarParametrosDePaginacao(page, pageSize);
 
             var consultaNoticiasSalvas = _context.Noticia
@@ -77,31 +87,36 @@ namespace NewsApp.Application.Services
                 })
                 .ToListAsync();
 
-            return new Response<ListarNoticiaResponseModel>
+            retorno.Data.Page = page;
+            retorno.Data.PageSize = pageSize;
+            retorno.Data.TotalRegistros = totalRegistros;
+
+            foreach (var noticia in noticias)
             {
-                Success = true,
-                Message = "Notícias listadas com sucesso.",
-                Data = new ListarNoticiaResponseModel
-                {
-                    Page = page,
-                    PageSize = pageSize,
-                    TotalRegistros = totalRegistros,
-                    Lista = noticias
-                }
-            };
+                retorno.Data.Lista.Add(noticia);
+            }
+
+            retorno.Success = true;
+            retorno.Message = "Notícias listadas com sucesso.";
+            return retorno;
         }
 
         public async Task<Response<NoticiaDetalheResponseModel>?> BuscarNoticiaSalvaPorIdAsync(int idNoticia)
         {
+            var retorno = new Response<NoticiaDetalheResponseModel>()
+            {
+                Data = new NoticiaDetalheResponseModel()
+            };
+
             if (idNoticia <= 0)
-                throw new ServiceException("Notícia inválida.");
+                throw new Exception("Notícia inválida.");
 
             var noticia = await _context.Noticia
                 .AsNoTracking()
                 .FirstOrDefaultAsync(noticia => noticia.IdNoticia == idNoticia && noticia.Situacao != "Excluido");
 
             if (noticia == null)
-                throw new ServiceException("Notícia não encontrada.");
+                throw new Exception("Notícia não encontrada.");
 
             var comentarios = await _context.Comentario
                 .AsNoTracking()
@@ -116,12 +131,10 @@ namespace NewsApp.Application.Services
                 })
                 .ToListAsync();
 
-            return new Response<NoticiaDetalheResponseModel>
-            {
-                Success = true,
-                Message = "Notícia encontrada com sucesso.",
-                Data = MapearNoticiaParaDetalheResponse(noticia, comentarios)
-            };
+            retorno.Data = MapearNoticiaParaDetalheResponse(noticia, comentarios);
+            retorno.Success = true;
+            retorno.Message = "Notícia encontrada com sucesso.";
+            return retorno;
         }
 
         private async Task<NewsApiResponseModel> BuscarNoticiasNaNewsApiAsync(int page, int pageSize)
@@ -138,12 +151,12 @@ namespace NewsApp.Application.Services
             var json = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
-                throw new ServiceException(MontarMensagemDeErroDaNewsApi(response, json));
+                throw new Exception(MontarMensagemDeErroDaNewsApi(response, json));
 
             var retornoNewsApi = JsonSerializer.Deserialize<NewsApiResponseModel>(json, CriarOpcoesDeDesserializacaoDaNewsApi());
 
             if (retornoNewsApi == null || !string.Equals(retornoNewsApi.Status, "ok", StringComparison.OrdinalIgnoreCase))
-                throw new ServiceException(MontarMensagemDeRespostaInvalidaDaNewsApi(json));
+                throw new Exception(MontarMensagemDeRespostaInvalidaDaNewsApi(json));
 
             return retornoNewsApi;
         }
@@ -156,7 +169,7 @@ namespace NewsApp.Application.Services
             var sortBy = _configuration["NewsApi:SortBy"] ?? "publishedAt";
 
             if (string.IsNullOrWhiteSpace(baseUrl))
-                throw new ServiceException("URL base da NewsAPI não configurada.");
+                throw new Exception("URL base da NewsAPI não configurada.");
 
             return string.Concat(
                 baseUrl,
@@ -172,7 +185,7 @@ namespace NewsApp.Application.Services
             var apiKey = _configuration["NewsApi:ApiKey"];
 
             if (string.IsNullOrWhiteSpace(apiKey))
-                throw new ServiceException("Chave da NewsAPI não configurada.");
+                throw new Exception("Chave da NewsAPI não configurada.");
 
             return apiKey;
         }
@@ -343,13 +356,13 @@ namespace NewsApp.Application.Services
         private static void ValidarParametrosDePaginacao(int page, int pageSize)
         {
             if (page <= 0)
-                throw new ServiceException("Página inválida.");
+                throw new Exception("Página inválida.");
 
             if (pageSize <= 0)
-                throw new ServiceException("Tamanho da página inválido.");
+                throw new Exception("Tamanho da página inválido.");
 
             if (pageSize > PageSizePadrao)
-                throw new ServiceException("A busca da NewsAPI está limitada a 20 notícias por página.");
+                throw new Exception("A busca da NewsAPI está limitada a 20 notícias por página.");
         }
 
         private static JsonSerializerOptions CriarOpcoesDeDesserializacaoDaNewsApi()

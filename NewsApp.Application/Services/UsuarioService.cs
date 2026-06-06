@@ -32,7 +32,7 @@ namespace NewsApp.Application.Services
                 .FirstOrDefaultAsync(x => x.Login == login && x.Senha == senha);
 
             if (usuario == null)
-                throw new ServiceException("Usuário ou senha inválidos.");
+                throw new Exception("Usuário ou senha inválidos.");
 
             retorno.Data = new LoginResponseModel()
             {
@@ -61,7 +61,7 @@ namespace NewsApp.Application.Services
 
             var checkUsuario = await _context.Usuario.AnyAsync(x => x.Login == request.Login);
             if (checkUsuario)
-                throw new ServiceException("Usuário já cadastrado.");
+                throw new Exception("Usuário já cadastrado.");
 
             var usuario = new Usuario(
                 request.Login,
