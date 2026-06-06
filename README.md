@@ -162,10 +162,18 @@ Por isso, durante a sincronizacao, o sistema tenta baixar a URL original da noti
 
 Os endpoints de noticia e comentario ficam protegidos por JWT.
 
-Use o endpoint de login para obter o token e envie nas chamadas protegidas:
+Para acessar os endpoints protegidos pelo Swagger, primeiro cadastre um usuario pelo endpoint de cadastro. Depois, faca login com esse usuario. O login retorna um token de acesso JWT.
+
+No Swagger, clique em `Authorize` e informe o token no formato:
 
 ```http
 Authorization: Bearer SEU_TOKEN
+```
+
+Exemplo:
+
+```text
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 ## Estrutura Resumida
@@ -198,4 +206,3 @@ O projeto busca manter:
 - entidades representando o estado do dominio;
 - DTOs separados para entrada e saida;
 - verificacoes explicitas antes de executar operacoes sensiveis.
-
