@@ -1,4 +1,7 @@
-public class ListarComentarioResponseModel
+namespace ERP_Application.Models.Comentario
 {
-    public List<ComentarioResponseModel> Lista = new List<ComentarioResponseModel>();
+    public class ListarComentarioResponseModel
+    {
+        public List<ComentarioResponseModel> Lista { get; set; } = new List<ComentarioResponseModel>();
+    }
 }

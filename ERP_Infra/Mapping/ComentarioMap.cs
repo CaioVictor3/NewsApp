@@ -12,9 +12,9 @@ namespace ERP_Infra.Mapping
             base.Configure(builder);
 
             builder.HasKey(c => c.IdComentario);
-            builder.Property(c => c.Conteudo).IsRequired().HasMaxLength(1000);
-            builder.Property(c => c.DataPublicacao);
-            builder.Property(c => c.ExternalNewsId).IsRequired().HasMaxLength(100);
+            builder.Property(c => c.Conteudo).IsRequired();
+            builder.Property(c => c.DataComentario).IsRequired();
+            builder.Property(c => c.IdNoticia).IsRequired();
 
             builder.HasOne(c => c.Usuario)
                 .WithMany()

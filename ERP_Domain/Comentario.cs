@@ -6,27 +6,31 @@ namespace ERP_Domain
     {
         public int IdComentario { get; set; }
         public string Conteudo { get; set; }
-        public DateTime DataPublicacao { get; set; }
+        public DateTime DataComentario { get; set; }
         public int IdUsuario { get; set; }
         public Usuario Usuario { get; set; }
-        public string ExternalNewsId { get; set; }
+        public int IdNoticia { get; set; }
 
         public Comentario() { }
 
-        public Comentario(int idUsuario, string conteudo, string externalNewsId)
+        public Comentario(int idUsuario, int idNoticia, string conteudo)
         {
-            this.IdUsuario = idUsuario;
-            this.Conteudo = conteudo;
-            this.ExternalNewsId = externalNewsId;
-            this.DataPublicacao = DateTime.Now;
+            IdUsuario = idUsuario;
+            IdNoticia = idNoticia;
+            Conteudo = conteudo;
+            DataComentario = DateTime.Now;
             SetUsuarioInclusao("Sistema");
         }
 
-        public void Removeer(string usuarioExclusao)
+        public void Atualizar(string conteudo, string usuarioAlteracao)
+        {
+            Conteudo = conteudo;
+            SetUsuarioAlteracao(usuarioAlteracao);
+        }
+
+        public void Remover(string usuarioExclusao)
         {
             SetUsuarioExclusao(usuarioExclusao);
         }
-
-
     }
 }

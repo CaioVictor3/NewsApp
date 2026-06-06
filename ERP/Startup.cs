@@ -37,6 +37,7 @@ namespace WebApplication1
             #region Serviços
             services.AddHttpContextAccessor();
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IComentarioService, ComentarioService>();
             #endregion
 
             // Token JWT
