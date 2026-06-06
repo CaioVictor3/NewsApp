@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.4.11626.88 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP_Api", "ERP\ERP_Api.csproj", "{E8C66932-D0D7-497B-BD98-834BF6217D92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsApp.Api", "NewsApp.Api\NewsApp.Api.csproj", "{E8C66932-D0D7-497B-BD98-834BF6217D92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP_Domain", "ERP_Domain\ERP_Domain.csproj", "{3A3A981F-6686-4A0D-816E-6C89444EDAD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsApp.Domain", "NewsApp.Domain\NewsApp.Domain.csproj", "{3A3A981F-6686-4A0D-816E-6C89444EDAD6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP_Application", "ERP_Application\ERP_Application.csproj", "{4237A4F1-D534-4260-8773-AF91A73A2512}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsApp.Application", "NewsApp.Application\NewsApp.Application.csproj", "{4237A4F1-D534-4260-8773-AF91A73A2512}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP_Infra", "ERP_Infra\ERP_Infra.csproj", "{786A0493-F01A-4C62-BE0D-720091A30821}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsApp.Infrastructure", "NewsApp.Infrastructure\NewsApp.Infrastructure.csproj", "{786A0493-F01A-4C62-BE0D-720091A30821}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
