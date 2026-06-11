@@ -11,6 +11,7 @@ namespace NewsApp.Infrastructure.DBContext
 		public DbSet<Usuario> Usuario { get; set; }
 		public DbSet<Comentario> Comentario { get; set; }
 		public DbSet<Noticia> Noticia { get; set; }
+		public DbSet<Favorito> Favorito { get; set; }
 
 		public Context(DbContextOptions options) : base(options)
 		{
@@ -21,6 +22,7 @@ namespace NewsApp.Infrastructure.DBContext
 			modelBuilder.Entity<Usuario>(new UsuarioMap().Configure);
 			modelBuilder.Entity<Comentario>(new ComentarioMap().Configure);
 			modelBuilder.Entity<Noticia>(new NoticiaMap().Configure);
+			modelBuilder.Entity<Favorito>(new FavoritoMap().Configure);
 
 			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
 			{

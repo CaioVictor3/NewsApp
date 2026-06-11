@@ -38,8 +38,9 @@ namespace NewsApp.Api
             services.AddHttpContextAccessor();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IComentarioService, ComentarioService>();
-            services.AddScoped<INoticiaService, NoticiaService>();
-            #endregion
+			services.AddScoped<INoticiaService, NoticiaService>();
+			services.AddScoped<IFavoritoService, FavoritoService>();
+			#endregion
 
             // Token JWT
             var key = Encoding.ASCII.GetBytes("11ccc561fdbf0dc949f2a7739606973e94d915b971b250d530e43ff651e8db1d");
