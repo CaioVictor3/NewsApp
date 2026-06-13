@@ -3,6 +3,7 @@ using System.Text.Json;
 using NewsApp.Application.Interface;
 using NewsApp.Application.Models;
 using NewsApp.Application.Models.Noticia;
+using NewsApp.Application.Models.NewsApi;
 using NewsApp.Domain;
 using NewsApp.Domain.Handle;
 using NewsApp.Infrastructure.DBContext;
@@ -15,7 +16,6 @@ namespace NewsApp.Application.Services
     public class NoticiaService : INoticiaService
     {
         private const int PageSizePadrao = 20;
-        private const string QueryPadraoNoticiasInteligenciaArtificial = "OpenAI OR ChatGPT OR Anthropic OR Claude OR Gemini OR NVIDIA OR \"artificial intelligence\"";
         private const int TamanhoMinimoConteudoExtraido = 300;
 
         private readonly Context _context;
@@ -136,7 +136,7 @@ namespace NewsApp.Application.Services
             return retorno;
         }
 
-        private async Task<NewsApiResponseModel> BuscarNoticiasNaNewsApiAsync(int page, int pageSize)
+        private async Task<RespostaDaBuscaDeNoticiasNaNewsApiModel> BuscarNoticiasNaNewsApiAsync(int page, int pageSize)
         {
             var urlDaNewsApi = MontarUrlDaNewsApiComFiltrosPadrao(page, pageSize);
             var apiKey = ObterApiKeyConfiguradaDaNewsApi();
@@ -152,7 +152,7 @@ namespace NewsApp.Application.Services
             if (!response.IsSuccessStatusCode)
                 throw new Exception(MontarMensagemDeErroDaNewsApi(response, json));
 
-            var retornoNewsApi = JsonSerializer.Deserialize<NewsApiResponseModel>(json, CriarOpcoesDeDesserializacaoDaNewsApi());
+            var retornoNewsApi = JsonSerializer.Deserialize<RespostaDaBuscaDeNoticiasNaNewsApiModel>(json, CriarOpcoesDeDesserializacaoDaNewsApi());
 
             if (retornoNewsApi == null || !string.Equals(retornoNewsApi.Status, "ok", StringComparison.OrdinalIgnoreCase))
                 throw new Exception(MontarMensagemDeRespostaInvalidaDaNewsApi(json));
@@ -163,12 +163,21 @@ namespace NewsApp.Application.Services
         private string MontarUrlDaNewsApiComFiltrosPadrao(int page, int pageSize)
         {
             var baseUrl = _configuration["NewsApi:BaseUrl"];
-            var query = _configuration["NewsApi:Query"] ?? QueryPadraoNoticiasInteligenciaArtificial;
-            var language = _configuration["NewsApi:Language"] ?? "pt";
-            var sortBy = _configuration["NewsApi:SortBy"] ?? "publishedAt";
+            var query = _configuration["NewsApi:Query"];
+            var language = _configuration["NewsApi:Language"];
+            var sortBy = _configuration["NewsApi:SortBy"];
 
             if (string.IsNullOrWhiteSpace(baseUrl))
                 throw new Exception("URL base da NewsAPI não configurada.");
+
+            if (string.IsNullOrWhiteSpace(query))
+                throw new Exception("Query da NewsAPI não configurada.");
+
+            if (string.IsNullOrWhiteSpace(language))
+                throw new Exception("Idioma da NewsAPI não configurado.");
+
+            if (string.IsNullOrWhiteSpace(sortBy))
+                throw new Exception("Ordenação da NewsAPI não configurada.");
 
             return string.Concat(
                 baseUrl,
@@ -189,14 +198,14 @@ namespace NewsApp.Application.Services
             return apiKey;
         }
 
-        private static List<NewsApiArticleModel> FiltrarArtigosValidosParaCadastro(IEnumerable<NewsApiArticleModel> artigos)
+        private static List<ArtigoRetornadoPelaNewsApiModel> FiltrarArtigosValidosParaCadastro(IEnumerable<ArtigoRetornadoPelaNewsApiModel> artigos)
         {
             return artigos
                 .Where(artigo => NoticiaDaNewsApiPossuiDadosMinimosParaCadastro(artigo))
                 .ToList();
         }
 
-        private async Task<List<Noticia>> SalvarSomenteNoticiasAindaNaoCadastradasAsync(List<NewsApiArticleModel> artigos)
+        private async Task<List<Noticia>> SalvarSomenteNoticiasAindaNaoCadastradasAsync(List<ArtigoRetornadoPelaNewsApiModel> artigos)
         {
             var urlsRetornadasPelaNewsApi = artigos
                 .Select(artigo => artigo.Url)
@@ -230,7 +239,7 @@ namespace NewsApp.Application.Services
             return noticiasSalvasNestaSincronizacao;
         }
 
-        private async Task<string> BuscarConteudoCompletoDaNoticiaNaUrlOriginalAsync(NewsApiArticleModel artigo)
+        private async Task<string> BuscarConteudoCompletoDaNoticiaNaUrlOriginalAsync(ArtigoRetornadoPelaNewsApiModel artigo)
         {
             var conteudoOriginalDaNewsApi = artigo.Content ?? string.Empty;
 
@@ -332,7 +341,7 @@ namespace NewsApp.Application.Services
                     StringSplitOptions.RemoveEmptyEntries));
         }
 
-        private static Noticia CriarNoticiaDoDominioAPartirDoArtigoDaNewsApi(NewsApiArticleModel artigo, string conteudo)
+        private static Noticia CriarNoticiaDoDominioAPartirDoArtigoDaNewsApi(ArtigoRetornadoPelaNewsApiModel artigo, string conteudo)
         {
             return new Noticia(
                 artigo.Source?.Id ?? string.Empty,
@@ -346,7 +355,7 @@ namespace NewsApp.Application.Services
                 conteudo);
         }
 
-        private static bool NoticiaDaNewsApiPossuiDadosMinimosParaCadastro(NewsApiArticleModel artigo)
+        private static bool NoticiaDaNewsApiPossuiDadosMinimosParaCadastro(ArtigoRetornadoPelaNewsApiModel artigo)
         {
             return !string.IsNullOrWhiteSpace(artigo.Url)
                 && !string.IsNullOrWhiteSpace(artigo.Title);
@@ -392,7 +401,7 @@ namespace NewsApp.Application.Services
             return "A NewsAPI retornou uma resposta inválida.";
         }
 
-        private static NewsApiErrorResponseModel? DesserializarErroDaNewsApi(string json)
+        private static RespostaDeErroRetornadaPelaNewsApiModel? DesserializarErroDaNewsApi(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
                 return null;
@@ -408,7 +417,7 @@ namespace NewsApp.Application.Services
             if (string.IsNullOrWhiteSpace(code) && string.IsNullOrWhiteSpace(message))
                 return null;
 
-            return new NewsApiErrorResponseModel
+            return new RespostaDeErroRetornadaPelaNewsApiModel
             {
                 Code = code,
                 Message = message
@@ -492,36 +501,5 @@ namespace NewsApp.Application.Services
             };
         }
 
-        private class NewsApiResponseModel
-        {
-            public string Status { get; set; } = string.Empty;
-            public int TotalResults { get; set; }
-            public List<NewsApiArticleModel> Articles { get; set; } = new List<NewsApiArticleModel>();
-        }
-
-        private class NewsApiErrorResponseModel
-        {
-            public string Status { get; set; } = string.Empty;
-            public string Code { get; set; } = string.Empty;
-            public string Message { get; set; } = string.Empty;
-        }
-
-        private class NewsApiArticleModel
-        {
-            public NewsApiSourceModel? Source { get; set; }
-            public string? Author { get; set; }
-            public string? Title { get; set; }
-            public string? Description { get; set; }
-            public string Url { get; set; } = string.Empty;
-            public string? UrlToImage { get; set; }
-            public DateTime PublishedAt { get; set; }
-            public string? Content { get; set; }
-        }
-
-        private class NewsApiSourceModel
-        {
-            public string? Id { get; set; }
-            public string? Name { get; set; }
-        }
     }
 }
