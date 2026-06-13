@@ -30,7 +30,7 @@ namespace NewsApp.Application.Services
             if (!usuarioExiste)
                 throw new Exception("Usuário não encontrado.");
 
-            var noticiaExiste = await _context.Noticia.AnyAsync(x => x.IdNoticia == request.IdNoticia && x.Situacao != "Excluido");
+            var noticiaExiste = await _context.Noticia.AnyAsync(x => x.IdNoticia == request.IdNoticia);
             if (!noticiaExiste)
                 throw new Exception("Notícia não encontrada.");
 
@@ -52,9 +52,9 @@ namespace NewsApp.Application.Services
                 Data = new ComentarioResponseModel()
             };
 
-            var comentario = await ObterComentarioAtivoAsync(idComentario);
+            var comentario = await ObterComentarioAsync(idComentario);
 
-            comentario.Remover("Sistema");
+            _context.Comentario.Remove(comentario);
             await _context.SaveChangesAsync();
 
             retorno.Data = MapearComentario(comentario);
@@ -75,7 +75,7 @@ namespace NewsApp.Application.Services
 
             var comentarios = await _context.Comentario
                 .AsNoTracking()
-                .Where(x => x.IdNoticia == idNoticia && x.Situacao != "Excluido")
+                .Where(x => x.IdNoticia == idNoticia)
                 .OrderByDescending(x => x.DataComentario)
                 .Select(x => new ComentarioResponseModel
                 {
@@ -106,11 +106,11 @@ namespace NewsApp.Application.Services
 
             ValidarRequest(request.IdUsuario, request.IdNoticia, request.Comentario);
 
-            var comentario = await ObterComentarioAtivoAsync(request.IdComentario);
+            var comentario = await ObterComentarioAsync(request.IdComentario);
             if (comentario.IdUsuario != request.IdUsuario || comentario.IdNoticia != request.IdNoticia)
                 throw new Exception("Comentário não encontrado para o usuário e notícia informados.");
 
-            comentario.Atualizar(request.Comentario, "Sistema");
+            comentario.Atualizar(request.Comentario);
             await _context.SaveChangesAsync();
 
             retorno.Data = MapearComentario(comentario);
@@ -131,13 +131,13 @@ namespace NewsApp.Application.Services
                 throw new Exception("Comentário é obrigatório.");
         }
 
-        private async Task<Comentario> ObterComentarioAtivoAsync(int idComentario)
+        private async Task<Comentario> ObterComentarioAsync(int idComentario)
         {
             if (idComentario <= 0)
                 throw new Exception("Comentário inválido.");
 
             var comentario = await _context.Comentario
-                .FirstOrDefaultAsync(x => x.IdComentario == idComentario && x.Situacao != "Excluido");
+                .FirstOrDefaultAsync(x => x.IdComentario == idComentario);
 
             if (comentario == null)
                 throw new Exception("Comentário não encontrado.");

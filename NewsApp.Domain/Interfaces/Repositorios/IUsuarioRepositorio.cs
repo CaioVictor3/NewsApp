@@ -1,4 +1,4 @@
-﻿using Proclin.Models;
+﻿using NewsApp.Domain;
 
 namespace NewsApp.Domain.Interfaces.Repositorios
 {

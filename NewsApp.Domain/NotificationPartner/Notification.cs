@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Proclin.NotificationPartner
+namespace NewsApp.Domain.NotificationPartner
 {
     public  class Notification
     { 

@@ -258,6 +258,24 @@ orleans.codegen.cs
 
 # Including strong name files can present a security risk
 # (https://github.com/github/gitignore/pull/2483#issue-259490424)
+
+# NewsApp local runtime files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+
+# Local/generated documentation artifacts
+docs/generated/
+documentation/
+Documentation/
+*.docx
+*.pdf
+*.pptx
+*.xlsx
 #*.snk
 
 # Since there are multiple workflows, uncomment next line to ignore bower_components

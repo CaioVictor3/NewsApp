@@ -11,14 +11,18 @@ using Microsoft.OpenApi.Models;
 using NewsApp.Application.Services;
 using NewsApp.Application.Interface;
 using NewsApp.Infrastructure.DBContext;
+using Microsoft.Data.Sqlite;
 
 namespace NewsApp.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _environment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         public IConfiguration Configuration { get; }
@@ -27,8 +31,7 @@ namespace NewsApp.Api
         {
             services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(LibraryEntrypoint).Assembly));
             
-            var connection = Configuration["ConnectionStrings:DefaultConnection"];
-            // Configurado para SQLite
+            var connection = ResolveSqliteConnectionString(Configuration.GetConnectionString("DefaultConnection"));
             services.AddDbContext<Context>(options => options.UseSqlite(connection));
 
             services.AddControllers();
@@ -38,8 +41,9 @@ namespace NewsApp.Api
             services.AddHttpContextAccessor();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IComentarioService, ComentarioService>();
-            services.AddScoped<INoticiaService, NoticiaService>();
-            #endregion
+			services.AddScoped<INoticiaService, NoticiaService>();
+			services.AddScoped<IFavoritoService, FavoritoService>();
+			#endregion
 
             // Token JWT
             var key = Encoding.ASCII.GetBytes("11ccc561fdbf0dc949f2a7739606973e94d915b971b250d530e43ff651e8db1d");
@@ -84,6 +88,32 @@ namespace NewsApp.Api
         }
 
         internal class LibraryEntrypoint {}
+
+        private string ResolveSqliteConnectionString(string? connectionString)
+        {
+            var builder = new SqliteConnectionStringBuilder(connectionString ?? "Data Source=newsapp.db");
+
+            if (!string.IsNullOrWhiteSpace(builder.DataSource)
+                && builder.DataSource != ":memory:"
+                && !Path.IsPathRooted(builder.DataSource))
+            {
+                builder.DataSource = Path.Combine(FindSolutionRoot(), builder.DataSource);
+            }
+
+            return builder.ToString();
+        }
+
+        private string FindSolutionRoot()
+        {
+            var directory = new DirectoryInfo(_environment.ContentRootPath);
+
+            while (directory != null && !File.Exists(Path.Combine(directory.FullName, "NewsApp.sln")))
+            {
+                directory = directory.Parent;
+            }
+
+            return directory?.FullName ?? Directory.GetCurrentDirectory();
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

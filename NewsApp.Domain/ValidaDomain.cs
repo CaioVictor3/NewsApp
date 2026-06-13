@@ -1,7 +1,7 @@
 ﻿using NewsApp.Domain.Handle;
 using System.Text.RegularExpressions;
 
-namespace Proclin.Models
+namespace NewsApp.Domain
 {
     public static class ValidaDomain
     {

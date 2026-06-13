@@ -1,16 +1,13 @@
 using NewsApp.Domain;
-using NewsApp.Infrastructure.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NewsApp.Infrastructure.Mapping
 {
-    public class NoticiaMap : BaseModelMap<Noticia>
+    public class NoticiaMap
     {
-        public override void Configure(EntityTypeBuilder<Noticia> builder)
+        public void Configure(EntityTypeBuilder<Noticia> builder)
         {
-            base.Configure(builder);
-
             builder.HasKey(n => n.IdNoticia);
 
             builder.Property(n => n.FonteId).HasMaxLength(100);
@@ -22,6 +19,7 @@ namespace NewsApp.Infrastructure.Mapping
             builder.Property(n => n.UrlImagem).HasMaxLength(2048);
             builder.Property(n => n.DataPublicacao).IsRequired();
             builder.Property(n => n.Conteudo);
+            builder.Property(n => n.DataInclusao);
 
             builder.HasIndex(n => n.Url).IsUnique();
         }
