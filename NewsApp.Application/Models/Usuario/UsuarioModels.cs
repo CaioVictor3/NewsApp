@@ -20,12 +20,4 @@ namespace NewsApp.Application.Models.Usuario
         public string Endereco { get; set; }
         public string TipoUsuario { get; set; }
     }
-
-    public class AlterarSenhaResponseModel { }
-    public class EsqueceuSenhaResponseModel { }
-    public class UsuarioListResponseModel { }
-    public class EsqueceuSenhaRequestModel { }
-    public class CriarUsuarioRequestModel { }
-    public class AtualizarUsuarioRequestModel { }
-    public class CriarUsuarioPacienteRequestModel { }
 }

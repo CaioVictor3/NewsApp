@@ -90,10 +90,6 @@ namespace NewsApp.Application.Services
             return retorno;
         }
 
-        public Task<Response<AlterarSenhaResponseModel>?> AlterarSenhaAsync(int idUsuario, string senha, string confirmarSenha, string usuarioAlteracao) => throw new NotImplementedException();
-        public Task<Response<EsqueceuSenhaResponseModel>?> EsqueceuSenhaAsync(EsqueceuSenhaRequestModel model) => throw new NotImplementedException();
-        public Task<Response<UsuarioListResponseModel>?> ListarUsuariosAsync() => throw new NotImplementedException();
-
         public async Task<Response<UsuarioResponseModel>?> ObterPorIdAsync(int id)
         {
             var retorno = new Response<UsuarioResponseModel>()
@@ -125,15 +121,6 @@ namespace NewsApp.Application.Services
 
             return retorno;
         }
-
-        public Task<Response<UsuarioResponseModel>?> AtivarUsuarioAsync(int idUsuario, string situacao, string usuarioAlteracao) => throw new NotImplementedException();
-        public Task<Response<UsuarioResponseModel>?> InativarUsuarioAsync(int idUsuario, string situacao, string usuarioAlteracao) => throw new NotImplementedException();
-        public Task<Response<UsuarioResponseModel>?> CriarUsuarioAsync(CriarUsuarioRequestModel request) => throw new NotImplementedException();
-        public Task<Response<UsuarioResponseModel>?> ExcluirUsuarioAsync(int id) => throw new NotImplementedException();
-        public Task<Response<UsuarioResponseModel>?> AtualizarUsuarioAsync(AtualizarUsuarioRequestModel request) => throw new NotImplementedException();
-        public Task<Response<UsuarioResponseModel>?> VerificarHashAlterarSenhaAsync(string hash) => throw new NotImplementedException();
-        public Task<Response<UsuarioResponseModel>?> AlterarSenhaLinkAsync(string senha, string confirmarSenha, string hash) => throw new NotImplementedException();
-        public Task<Response<UsuarioResponseModel>?> CadastrarUsuarioPacienteAsync(CriarUsuarioPacienteRequestModel request) => throw new NotImplementedException();
     }
 
     public class CriarUsuarioMobileRequestModel
