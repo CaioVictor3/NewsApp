@@ -11,8 +11,8 @@ using NewsApp.Infrastructure.DBContext;
 namespace NewsApp.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20260611224128_AdicionarFavorito")]
-    partial class AdicionarFavorito
+    [Migration("20260613000000_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,13 +29,7 @@ namespace NewsApp.Infrastructure.Migrations
                     b.Property<string>("Conteudo")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("DataAlteracao")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("DataComentario")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DataExclusao")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DataInclusao")
@@ -48,15 +42,6 @@ namespace NewsApp.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Situacao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioAlteracao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioExclusao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioInclusao")
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("IdComentario");
@@ -74,12 +59,6 @@ namespace NewsApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DataAlteracao")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DataExclusao")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("DataInclusao")
                         .HasColumnType("TEXT");
 
@@ -90,15 +69,6 @@ namespace NewsApp.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Situacao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioAlteracao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioExclusao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioInclusao")
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("IdFavorito");
@@ -122,12 +92,6 @@ namespace NewsApp.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Conteudo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DataAlteracao")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DataExclusao")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DataInclusao")
@@ -163,15 +127,6 @@ namespace NewsApp.Infrastructure.Migrations
                         .HasMaxLength(2048)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UsuarioAlteracao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioExclusao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioInclusao")
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("IdNoticia");
 
                     b.HasIndex("Url")
@@ -180,7 +135,7 @@ namespace NewsApp.Infrastructure.Migrations
                     b.ToTable("Noticia");
                 });
 
-            modelBuilder.Entity("Proclin.Models.Usuario", b =>
+            modelBuilder.Entity("NewsApp.Domain.Usuario", b =>
                 {
                     b.Property<int>("IdUsuario")
                         .ValueGeneratedOnAdd()
@@ -188,12 +143,6 @@ namespace NewsApp.Infrastructure.Migrations
 
                     b.Property<string>("CPF")
                         .HasMaxLength(14)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DataAlteracao")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DataExclusao")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DataInclusao")
@@ -229,15 +178,6 @@ namespace NewsApp.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UsuarioAlteracao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioExclusao")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UsuarioInclusao")
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("IdUsuario");
 
                     b.ToTable("Usuario");
@@ -251,7 +191,7 @@ namespace NewsApp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Proclin.Models.Usuario", "Usuario")
+                    b.HasOne("NewsApp.Domain.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -270,7 +210,7 @@ namespace NewsApp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Proclin.Models.Usuario", "Usuario")
+                    b.HasOne("NewsApp.Domain.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)

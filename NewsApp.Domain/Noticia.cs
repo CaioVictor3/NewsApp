@@ -1,8 +1,6 @@
-using Proclin.Models;
-
 namespace NewsApp.Domain
 {
-    public class Noticia : BaseModel
+    public class Noticia
     {
         public int IdNoticia { get; set; }
         public string FonteId { get; set; } = string.Empty;
@@ -14,6 +12,8 @@ namespace NewsApp.Domain
         public string UrlImagem { get; set; } = string.Empty;
         public DateTime DataPublicacao { get; set; }
         public string Conteudo { get; set; } = string.Empty;
+        public DateTime DataInclusao { get; set; }
+        public string Situacao { get; set; } = string.Empty;
 
         public Noticia() { }
 
@@ -37,7 +37,8 @@ namespace NewsApp.Domain
             UrlImagem = urlImagem;
             DataPublicacao = dataPublicacao;
             Conteudo = conteudo;
-            SetUsuarioInclusao("API");
+            DataInclusao = DateTime.Now;
+            Situacao = "Ativo";
         }
     }
 }

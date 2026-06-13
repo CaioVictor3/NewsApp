@@ -1,8 +1,6 @@
-﻿using Proclin.Models;
-
-namespace Proclin.Models
+﻿namespace NewsApp.Domain
 {
-    public class Usuario : BaseModel
+    public class Usuario
     {
         public int IdUsuario { get; set; }
         public string? Login { get; set; }
@@ -13,6 +11,8 @@ namespace Proclin.Models
         public string? CPF { get; set; }
         public DateTime? DataNascimento { get; set; }
         public string? TipoUsuario { get; set; }
+        public DateTime DataInclusao { get; set; }
+        public string? Situacao { get; set; }
 
         public Usuario() { }
 
@@ -26,7 +26,8 @@ namespace Proclin.Models
             this.DataNascimento = dataNascimento;
             this.Endereco = endereco;
             this.TipoUsuario = "Mobile";
-            SetUsuarioInclusao("Sistema");
+            this.DataInclusao = DateTime.Now;
+            this.Situacao = "Ativo";
         }
     }
 }

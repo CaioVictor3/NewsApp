@@ -16,6 +16,7 @@ namespace NewsApp.Application.Models.Usuario
         public string Email { get; set; }
         public string Cpf { get; set; }
         public DateTime? DataNascimento { get; set; }
+        public DateTime DataInclusao { get; set; }
         public string Endereco { get; set; }
         public string TipoUsuario { get; set; }
         public string Situacao { get; set; }

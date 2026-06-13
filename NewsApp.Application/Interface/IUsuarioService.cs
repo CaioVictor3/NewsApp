@@ -1,7 +1,6 @@
 using NewsApp.Application.Models;
 using NewsApp.Application.Models.Usuario;
 using NewsApp.Application.Services;
-using Proclin.Models;
 
 namespace NewsApp.Application.Interface
 {

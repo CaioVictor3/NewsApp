@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NewsApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AdicionarFavorito : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,12 +26,7 @@ namespace NewsApp.Infrastructure.Migrations
                     UrlImagem = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: true),
                     DataPublicacao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Conteudo = table.Column<string>(type: "TEXT", nullable: true),
-                    UsuarioInclusao = table.Column<string>(type: "varchar(255)", nullable: true),
-                    UsuarioAlteracao = table.Column<string>(type: "varchar(255)", nullable: true),
-                    UsuarioExclusao = table.Column<string>(type: "varchar(255)", nullable: true),
                     DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DataAlteracao = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Situacao = table.Column<string>(type: "varchar(255)", nullable: true)
                 },
                 constraints: table =>
@@ -53,12 +48,7 @@ namespace NewsApp.Infrastructure.Migrations
                     CPF = table.Column<string>(type: "TEXT", maxLength: 14, nullable: true),
                     DataNascimento = table.Column<DateTime>(type: "TEXT", nullable: true),
                     TipoUsuario = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
-                    UsuarioInclusao = table.Column<string>(type: "varchar(255)", nullable: true),
-                    UsuarioAlteracao = table.Column<string>(type: "varchar(255)", nullable: true),
-                    UsuarioExclusao = table.Column<string>(type: "varchar(255)", nullable: true),
                     DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DataAlteracao = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Situacao = table.Column<string>(type: "varchar(255)", nullable: true)
                 },
                 constraints: table =>
@@ -76,12 +66,7 @@ namespace NewsApp.Infrastructure.Migrations
                     DataComentario = table.Column<DateTime>(type: "TEXT", nullable: false),
                     IdUsuario = table.Column<int>(type: "INTEGER", nullable: false),
                     IdNoticia = table.Column<int>(type: "INTEGER", nullable: false),
-                    UsuarioInclusao = table.Column<string>(type: "varchar(255)", nullable: true),
-                    UsuarioAlteracao = table.Column<string>(type: "varchar(255)", nullable: true),
-                    UsuarioExclusao = table.Column<string>(type: "varchar(255)", nullable: true),
                     DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DataAlteracao = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Situacao = table.Column<string>(type: "varchar(255)", nullable: true)
                 },
                 constraints: table =>
@@ -109,12 +94,7 @@ namespace NewsApp.Infrastructure.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     IdUsuario = table.Column<int>(type: "INTEGER", nullable: false),
                     IdNoticia = table.Column<int>(type: "INTEGER", nullable: false),
-                    UsuarioInclusao = table.Column<string>(type: "varchar(255)", nullable: true),
-                    UsuarioAlteracao = table.Column<string>(type: "varchar(255)", nullable: true),
-                    UsuarioExclusao = table.Column<string>(type: "varchar(255)", nullable: true),
                     DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DataAlteracao = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    DataExclusao = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Situacao = table.Column<string>(type: "varchar(255)", nullable: true)
                 },
                 constraints: table =>
@@ -165,17 +145,10 @@ namespace NewsApp.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Comentario");
-
-            migrationBuilder.DropTable(
-                name: "Favorito");
-
-            migrationBuilder.DropTable(
-                name: "Noticia");
-
-            migrationBuilder.DropTable(
-                name: "Usuario");
+            migrationBuilder.DropTable(name: "Comentario");
+            migrationBuilder.DropTable(name: "Favorito");
+            migrationBuilder.DropTable(name: "Noticia");
+            migrationBuilder.DropTable(name: "Usuario");
         }
     }
 }

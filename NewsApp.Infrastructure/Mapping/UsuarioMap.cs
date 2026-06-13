@@ -1,16 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Proclin.Models;
-using NewsApp.Infrastructure.Base;
+using NewsApp.Domain;
 
 namespace NewsApp.Infrastructure.Mapping
 {
-    public class UsuarioMap : BaseModelMap<Usuario>
+    public class UsuarioMap
     {
-        public override void Configure(EntityTypeBuilder<Usuario> builder)
+        public void Configure(EntityTypeBuilder<Usuario> builder)
         {
-            base.Configure(builder);
-
             builder.HasKey(c => c.IdUsuario);
             builder.Property(c => c.Nome).HasMaxLength(200);
             builder.Property(c => c.Login).HasMaxLength(50);
@@ -20,6 +17,8 @@ namespace NewsApp.Infrastructure.Mapping
             builder.Property(c => c.Endereco).HasMaxLength(500);
             builder.Property(c => c.DataNascimento);
             builder.Property(c => c.TipoUsuario).HasMaxLength(20);
+            builder.Property(c => c.DataInclusao);
+            builder.Property(c => c.Situacao).HasColumnType("varchar(255)");
         }
     }
 }

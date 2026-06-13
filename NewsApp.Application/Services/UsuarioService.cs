@@ -2,11 +2,11 @@ using NewsApp.Application.Interface;
 using NewsApp.Application.Models;
 using NewsApp.Application.Models.Usuario;
 using NewsApp.Application.Token;
+using NewsApp.Domain;
 using NewsApp.Domain.Handle;
 using NewsApp.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Proclin.Models;
 
 namespace NewsApp.Application.Services
 {
@@ -82,6 +82,7 @@ namespace NewsApp.Application.Services
             retorno.Data.Email = usuario.Email;
             retorno.Data.Cpf = usuario.CPF;
             retorno.Data.DataNascimento = usuario.DataNascimento;
+            retorno.Data.DataInclusao = usuario.DataInclusao;
             retorno.Data.Endereco = usuario.Endereco;
             retorno.Data.TipoUsuario = usuario.TipoUsuario;
             retorno.Data.Situacao = usuario.Situacao;
@@ -117,6 +118,7 @@ namespace NewsApp.Application.Services
             retorno.Data.Email = usuario.Email;
             retorno.Data.Cpf = usuario.CPF;
             retorno.Data.DataNascimento = usuario.DataNascimento;
+            retorno.Data.DataInclusao = usuario.DataInclusao;
             retorno.Data.Endereco = usuario.Endereco;
             retorno.Data.TipoUsuario = usuario.TipoUsuario;
             retorno.Data.Situacao = usuario.Situacao;

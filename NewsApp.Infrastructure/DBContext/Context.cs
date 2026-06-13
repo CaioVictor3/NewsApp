@@ -2,7 +2,6 @@ using NewsApp.Domain;
 using NewsApp.Infrastructure.Base;
 using NewsApp.Infrastructure.Mapping;
 using Microsoft.EntityFrameworkCore;
-using Proclin.Models;
 
 namespace NewsApp.Infrastructure.DBContext
 {

@@ -24,7 +24,7 @@ Swagger at `https://localhost:5001/swagger` (profile `DESENV`; also `PROD`).
 ## Key conventions
 
 - **All endpoints return `Response<T>`** (`Application/Models/Response.cs`) with `Success`, `Message`, `Data`.
-- **Soft delete** — entities have `Situacao` ("Ativo"/"Excluido") via `BaseModel.SetUsuarioExclusao()`. Queries filter `Situacao != "Excluido"`.
+- **Soft delete** — entities have `Situacao` ("Ativo"/"Excluido"). Queries filter `Situacao != "Excluido"`.
 - **Portuguese route naming** (e.g. `/api/usuario/login`, `/api/noticia/sincronizar-news-api`).
 - **`DomainException`** returns generic "Internal Server Error" in error handler. **`ServiceException`** leaks its message to the client.
 - **Duplicate news prevention**: unique index on `Noticia.Url`.
@@ -56,11 +56,11 @@ All protected by JWT. Duplicate (user+news) prevented by unique index.
 ## Gotchas
 
 - **No tests exist** — no test project in the solution.
-- **DB path in `appsettings.json` is hardcoded** to a developer machine path. Override via `ConnectionStrings:DefaultConnection`.
+- **DB path in `appsettings.json`** defaults to `Data Source=newsapp.db`; relative SQLite paths are resolved to the solution root.
 - **JWT secret hardcoded** in two places (`Startup.cs:45`, `TokenService.cs:13`). Both must stay in sync.
 - **EF Core Migrations folder** lives at `NewsApp.Infrastructure/Migrations/`.
 - **MediatR registered** in Startup (`Line 28`) but not actually used by any visible handler.
-- Namespace leak: several Domain files use `Proclin.Models` (from a former project template).
+- Domain namespaces should stay native to this project (`NewsApp.Domain`).
 - `package-lock.json` refers to `AppNews` (old name) — no real Node deps.
 - `libman.json` at `NewsApp.Api/libman.json` is empty / unused.
 

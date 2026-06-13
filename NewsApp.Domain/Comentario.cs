@@ -1,8 +1,6 @@
-using Proclin.Models;
-
 namespace NewsApp.Domain
 {
-    public class Comentario : BaseModel
+    public class Comentario
     {
         public int IdComentario { get; set; }
         public string Conteudo { get; set; }
@@ -11,6 +9,8 @@ namespace NewsApp.Domain
         public Usuario Usuario { get; set; }
         public int IdNoticia { get; set; }
         public Noticia Noticia { get; set; }
+        public DateTime DataInclusao { get; set; }
+        public string Situacao { get; set; }
 
         public Comentario() { }
 
@@ -20,18 +20,18 @@ namespace NewsApp.Domain
             IdNoticia = idNoticia;
             Conteudo = conteudo;
             DataComentario = DateTime.Now;
-            SetUsuarioInclusao("Sistema");
+            DataInclusao = DateTime.Now;
+            Situacao = "Ativo";
         }
 
-        public void Atualizar(string conteudo, string usuarioAlteracao)
+        public void Atualizar(string conteudo)
         {
             Conteudo = conteudo;
-            SetUsuarioAlteracao(usuarioAlteracao);
         }
 
-        public void Remover(string usuarioExclusao)
+        public void Remover()
         {
-            SetUsuarioExclusao(usuarioExclusao);
+            Situacao = "Excluido";
         }
     }
 }

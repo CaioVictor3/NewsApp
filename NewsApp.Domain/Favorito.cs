@@ -1,14 +1,14 @@
-using Proclin.Models;
-
 namespace NewsApp.Domain
 {
-    public class Favorito : BaseModel
+    public class Favorito
     {
         public int IdFavorito { get; set; }
         public int IdUsuario { get; set; }
         public Usuario Usuario { get; set; }
         public int IdNoticia { get; set; }
         public Noticia Noticia { get; set; }
+        public DateTime DataInclusao { get; set; }
+        public string Situacao { get; set; }
 
         public Favorito() { }
 
@@ -16,7 +16,13 @@ namespace NewsApp.Domain
         {
             IdUsuario = idUsuario;
             IdNoticia = idNoticia;
-            SetUsuarioInclusao("Sistema");
+            DataInclusao = DateTime.Now;
+            Situacao = "Ativo";
+        }
+
+        public void Remover()
+        {
+            Situacao = "Excluido";
         }
     }
 }

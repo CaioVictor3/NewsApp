@@ -1,17 +1,16 @@
 using NewsApp.Domain;
-using NewsApp.Infrastructure.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NewsApp.Infrastructure.Mapping
 {
-    public class FavoritoMap : BaseModelMap<Favorito>
+    public class FavoritoMap
     {
-        public override void Configure(EntityTypeBuilder<Favorito> builder)
+        public void Configure(EntityTypeBuilder<Favorito> builder)
         {
-            base.Configure(builder);
-
             builder.HasKey(f => f.IdFavorito);
+            builder.Property(f => f.DataInclusao);
+            builder.Property(f => f.Situacao).HasColumnType("varchar(255)");
 
             builder.HasOne(f => f.Usuario)
                 .WithMany()

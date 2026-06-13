@@ -75,7 +75,7 @@ namespace NewsApp.Application.Services
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.IdNoticia == favorito.IdNoticia);
 
-            favorito.SetUsuarioExclusao("Sistema");
+            favorito.Remover();
             await _context.SaveChangesAsync();
 
             if (noticia != null)

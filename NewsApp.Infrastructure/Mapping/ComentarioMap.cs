@@ -1,20 +1,19 @@
 using NewsApp.Domain;
-using NewsApp.Infrastructure.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace NewsApp.Infrastructure.Mapping
 {
-    public class ComentarioMap : BaseModelMap<Comentario>
+    public class ComentarioMap
     {
-        public override void Configure(EntityTypeBuilder<Comentario> builder)
+        public void Configure(EntityTypeBuilder<Comentario> builder)
         {
-            base.Configure(builder);
-
             builder.HasKey(c => c.IdComentario);
             builder.Property(c => c.Conteudo).IsRequired();
             builder.Property(c => c.DataComentario).IsRequired();
             builder.Property(c => c.IdNoticia).IsRequired();
+            builder.Property(c => c.DataInclusao);
+            builder.Property(c => c.Situacao).HasColumnType("varchar(255)");
 
             builder.HasOne(c => c.Usuario)
                 .WithMany()

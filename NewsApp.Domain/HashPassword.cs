@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Proclin.Models
+namespace NewsApp.Domain
 {
     public class HashPassword
     {

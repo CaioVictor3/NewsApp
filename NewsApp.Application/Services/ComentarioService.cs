@@ -54,7 +54,7 @@ namespace NewsApp.Application.Services
 
             var comentario = await ObterComentarioAtivoAsync(idComentario);
 
-            comentario.Remover("Sistema");
+            comentario.Remover();
             await _context.SaveChangesAsync();
 
             retorno.Data = MapearComentario(comentario);
@@ -110,7 +110,7 @@ namespace NewsApp.Application.Services
             if (comentario.IdUsuario != request.IdUsuario || comentario.IdNoticia != request.IdNoticia)
                 throw new Exception("Comentário não encontrado para o usuário e notícia informados.");
 
-            comentario.Atualizar(request.Comentario, "Sistema");
+            comentario.Atualizar(request.Comentario);
             await _context.SaveChangesAsync();
 
             retorno.Data = MapearComentario(comentario);
