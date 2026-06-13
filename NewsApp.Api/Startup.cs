@@ -29,8 +29,6 @@ namespace NewsApp.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(LibraryEntrypoint).Assembly));
-            
             var connection = ResolveSqliteConnectionString(Configuration.GetConnectionString("DefaultConnection"));
             services.AddDbContext<Context>(options => options.UseSqlite(connection));
 
@@ -87,8 +85,6 @@ namespace NewsApp.Api
             });
         }
 
-        internal class LibraryEntrypoint {}
-
         private string ResolveSqliteConnectionString(string? connectionString)
         {
             var builder = new SqliteConnectionStringBuilder(connectionString ?? "Data Source=newsapp.db");
@@ -125,7 +121,6 @@ namespace NewsApp.Api
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseCors(x => x

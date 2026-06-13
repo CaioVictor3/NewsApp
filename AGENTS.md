@@ -16,7 +16,7 @@ Swagger at `https://localhost:5001/swagger` (profile `DESENV`; also `PROD`).
 
 | Project | Responsibility |
 |---|---|---|
-| `NewsApp.Api` | Controllers, Startup, Swagger, MVC Views, wwwroot static files |
+| `NewsApp.Api` | Controllers, Startup, Swagger |
 | `NewsApp.Application` | Services, interfaces, DTOs (`Models/`), JWT token generation |
 | `NewsApp.Domain` | Entities (`Usuario`, `Noticia`, `Comentario`, `Favorito`), base model, domain exceptions |
 | `NewsApp.Infrastructure` | EF Core `DbContext`, entity mappings, repository base, SQLite |
@@ -59,10 +59,7 @@ All protected by JWT. Duplicate (user+news) prevented by unique index.
 - **DB path in `appsettings.json`** defaults to `Data Source=newsapp.db`; relative SQLite paths are resolved to the solution root.
 - **JWT secret hardcoded** in two places (`Startup.cs:45`, `TokenService.cs:13`). Both must stay in sync.
 - **EF Core Migrations folder** lives at `NewsApp.Infrastructure/Migrations/`.
-- **MediatR registered** in Startup (`Line 28`) but not actually used by any visible handler.
 - Domain namespaces should stay native to this project (`NewsApp.Domain`).
-- `package-lock.json` refers to `AppNews` (old name) — no real Node deps.
-- `libman.json` at `NewsApp.Api/libman.json` is empty / unused.
 
 ## Node.js backend (`backendNode/`)
 
