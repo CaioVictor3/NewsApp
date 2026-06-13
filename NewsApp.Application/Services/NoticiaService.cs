@@ -67,7 +67,6 @@ namespace NewsApp.Application.Services
 
             var consultaNoticiasSalvas = _context.Noticia
                 .AsNoTracking()
-                .Where(noticia => noticia.Situacao != "Excluido")
                 .OrderByDescending(noticia => noticia.DataPublicacao);
 
             var totalRegistros = await consultaNoticiasSalvas.CountAsync();
@@ -113,14 +112,14 @@ namespace NewsApp.Application.Services
 
             var noticia = await _context.Noticia
                 .AsNoTracking()
-                .FirstOrDefaultAsync(noticia => noticia.IdNoticia == idNoticia && noticia.Situacao != "Excluido");
+                .FirstOrDefaultAsync(noticia => noticia.IdNoticia == idNoticia);
 
             if (noticia == null)
                 throw new Exception("Notícia não encontrada.");
 
             var comentarios = await _context.Comentario
                 .AsNoTracking()
-                .Where(comentario => comentario.IdNoticia == idNoticia && comentario.Situacao != "Excluido")
+                .Where(comentario => comentario.IdNoticia == idNoticia)
                 .OrderByDescending(comentario => comentario.DataComentario)
                 .Select(comentario => new ComentarioNoticiaResponseModel
                 {

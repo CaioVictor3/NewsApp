@@ -20,7 +20,6 @@ namespace NewsApp.Infrastructure.Mapping
             builder.Property(n => n.DataPublicacao).IsRequired();
             builder.Property(n => n.Conteudo);
             builder.Property(n => n.DataInclusao);
-            builder.Property(n => n.Situacao).HasColumnType("varchar(255)");
 
             builder.HasIndex(n => n.Url).IsUnique();
         }

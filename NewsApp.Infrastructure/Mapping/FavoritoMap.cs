@@ -10,7 +10,6 @@ namespace NewsApp.Infrastructure.Mapping
         {
             builder.HasKey(f => f.IdFavorito);
             builder.Property(f => f.DataInclusao);
-            builder.Property(f => f.Situacao).HasColumnType("varchar(255)");
 
             builder.HasOne(f => f.Usuario)
                 .WithMany()

@@ -36,13 +36,13 @@ namespace NewsApp.Application.Services
 
             var noticia = await _context.Noticia
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.IdNoticia == request.IdNoticia && x.Situacao != "Excluido");
+                .FirstOrDefaultAsync(x => x.IdNoticia == request.IdNoticia);
 
             if (noticia == null)
                 throw new Exception("Notícia não encontrada.");
 
             var jaFavoritado = await _context.Favorito
-                .AnyAsync(x => x.IdUsuario == request.IdUsuario && x.IdNoticia == request.IdNoticia && x.Situacao != "Excluido");
+                .AnyAsync(x => x.IdUsuario == request.IdUsuario && x.IdNoticia == request.IdNoticia);
 
             if (jaFavoritado)
                 throw new Exception("Notícia já favoritada.");
@@ -66,7 +66,7 @@ namespace NewsApp.Application.Services
             };
 
             var favorito = await _context.Favorito
-                .FirstOrDefaultAsync(x => x.IdFavorito == idFavorito && x.Situacao != "Excluido");
+                .FirstOrDefaultAsync(x => x.IdFavorito == idFavorito);
 
             if (favorito == null)
                 throw new Exception("Favorito não encontrado.");
@@ -75,7 +75,7 @@ namespace NewsApp.Application.Services
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.IdNoticia == favorito.IdNoticia);
 
-            favorito.Remover();
+            _context.Favorito.Remove(favorito);
             await _context.SaveChangesAsync();
 
             if (noticia != null)
@@ -98,8 +98,7 @@ namespace NewsApp.Application.Services
 
             var favoritos = await _context.Favorito
                 .AsNoTracking()
-                .Include(x => x.Noticia)
-                .Where(x => x.IdUsuario == idUsuario && x.Situacao != "Excluido")
+                .Where(x => x.IdUsuario == idUsuario)
                 .OrderByDescending(x => x.DataInclusao)
                 .Select(x => new FavoritoResponseModel
                 {

@@ -13,7 +13,6 @@ namespace NewsApp.Infrastructure.Mapping
             builder.Property(c => c.DataComentario).IsRequired();
             builder.Property(c => c.IdNoticia).IsRequired();
             builder.Property(c => c.DataInclusao);
-            builder.Property(c => c.Situacao).HasColumnType("varchar(255)");
 
             builder.HasOne(c => c.Usuario)
                 .WithMany()

@@ -13,7 +13,6 @@ namespace NewsApp.Domain
         public DateTime DataPublicacao { get; set; }
         public string Conteudo { get; set; } = string.Empty;
         public DateTime DataInclusao { get; set; }
-        public string Situacao { get; set; } = string.Empty;
 
         public Noticia() { }
 
@@ -38,7 +37,6 @@ namespace NewsApp.Domain
             DataPublicacao = dataPublicacao;
             Conteudo = conteudo;
             DataInclusao = DateTime.Now;
-            Situacao = "Ativo";
         }
     }
 }

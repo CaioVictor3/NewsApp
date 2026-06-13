@@ -8,7 +8,6 @@ namespace NewsApp.Domain
         public int IdNoticia { get; set; }
         public Noticia Noticia { get; set; }
         public DateTime DataInclusao { get; set; }
-        public string Situacao { get; set; }
 
         public Favorito() { }
 
@@ -17,12 +16,6 @@ namespace NewsApp.Domain
             IdUsuario = idUsuario;
             IdNoticia = idNoticia;
             DataInclusao = DateTime.Now;
-            Situacao = "Ativo";
-        }
-
-        public void Remover()
-        {
-            Situacao = "Excluido";
         }
     }
 }

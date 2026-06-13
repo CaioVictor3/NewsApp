@@ -85,7 +85,6 @@ namespace NewsApp.Application.Services
             retorno.Data.DataInclusao = usuario.DataInclusao;
             retorno.Data.Endereco = usuario.Endereco;
             retorno.Data.TipoUsuario = usuario.TipoUsuario;
-            retorno.Data.Situacao = usuario.Situacao;
             retorno.Success = true;
             retorno.Message = "Usuário cadastrado com sucesso.";
             return retorno;
@@ -107,7 +106,7 @@ namespace NewsApp.Application.Services
 
             var usuario = await _context.Usuario
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.IdUsuario == id && x.Situacao != "Excluido");
+                .FirstOrDefaultAsync(x => x.IdUsuario == id);
 
             if (usuario == null)
                 throw new ServiceException("Usuário não encontrado.");
@@ -121,7 +120,6 @@ namespace NewsApp.Application.Services
             retorno.Data.DataInclusao = usuario.DataInclusao;
             retorno.Data.Endereco = usuario.Endereco;
             retorno.Data.TipoUsuario = usuario.TipoUsuario;
-            retorno.Data.Situacao = usuario.Situacao;
             retorno.Success = true;
             retorno.Message = "Usuário obtido com sucesso.";
 

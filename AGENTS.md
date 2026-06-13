@@ -24,7 +24,7 @@ Swagger at `https://localhost:5001/swagger` (profile `DESENV`; also `PROD`).
 ## Key conventions
 
 - **All endpoints return `Response<T>`** (`Application/Models/Response.cs`) with `Success`, `Message`, `Data`.
-- **Soft delete** — entities have `Situacao` ("Ativo"/"Excluido"). Queries filter `Situacao != "Excluido"`.
+- Deletes are physical deletes in the database; entities do not use soft delete state.
 - **Portuguese route naming** (e.g. `/api/usuario/login`, `/api/noticia/sincronizar-news-api`).
 - **`DomainException`** returns generic "Internal Server Error" in error handler. **`ServiceException`** leaks its message to the client.
 - **Duplicate news prevention**: unique index on `Noticia.Url`.
@@ -48,7 +48,7 @@ dotnet ef database update --project ../NewsApp.Infrastructure --startup-project 
 | Method | Route | Action |
 |---|---|---|
 | POST | `/api/favorito/adicionar` | Add favorite (`{ idUsuario, idNoticia }`) |
-| DELETE | `/api/favorito/remover?idFavorito=` | Remove favorite (soft delete) |
+| DELETE | `/api/favorito/remover?idFavorito=` | Remove favorite |
 | GET | `/api/favorito/listar-por-usuario?idUsuario=` | List user's favorites |
 
 All protected by JWT. Duplicate (user+news) prevented by unique index.

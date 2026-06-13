@@ -12,7 +12,6 @@
         public DateTime? DataNascimento { get; set; }
         public string? TipoUsuario { get; set; }
         public DateTime DataInclusao { get; set; }
-        public string? Situacao { get; set; }
 
         public Usuario() { }
 
@@ -27,7 +26,6 @@
             this.Endereco = endereco;
             this.TipoUsuario = "Mobile";
             this.DataInclusao = DateTime.Now;
-            this.Situacao = "Ativo";
         }
     }
 }

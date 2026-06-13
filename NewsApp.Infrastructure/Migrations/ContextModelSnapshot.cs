@@ -37,10 +37,6 @@ namespace NewsApp.Infrastructure.Migrations
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Situacao")
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("IdComentario");
 
                     b.HasIndex("IdNoticia");
@@ -64,10 +60,6 @@ namespace NewsApp.Infrastructure.Migrations
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Situacao")
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("IdFavorito");
 
                     b.HasIndex("IdNoticia");
@@ -108,10 +100,6 @@ namespace NewsApp.Infrastructure.Migrations
                     b.Property<string>("FonteNome")
                         .HasMaxLength(255)
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("Situacao")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Titulo")
                         .HasMaxLength(1000)
                         .HasColumnType("TEXT");
@@ -167,10 +155,6 @@ namespace NewsApp.Infrastructure.Migrations
                     b.Property<string>("Senha")
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("Situacao")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("TipoUsuario")
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");

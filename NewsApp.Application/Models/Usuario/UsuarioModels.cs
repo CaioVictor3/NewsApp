@@ -19,7 +19,6 @@ namespace NewsApp.Application.Models.Usuario
         public DateTime DataInclusao { get; set; }
         public string Endereco { get; set; }
         public string TipoUsuario { get; set; }
-        public string Situacao { get; set; }
     }
 
     public class AlterarSenhaResponseModel { }

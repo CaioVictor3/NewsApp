@@ -10,7 +10,6 @@ namespace NewsApp.Domain
         public int IdNoticia { get; set; }
         public Noticia Noticia { get; set; }
         public DateTime DataInclusao { get; set; }
-        public string Situacao { get; set; }
 
         public Comentario() { }
 
@@ -21,17 +20,11 @@ namespace NewsApp.Domain
             Conteudo = conteudo;
             DataComentario = DateTime.Now;
             DataInclusao = DateTime.Now;
-            Situacao = "Ativo";
         }
 
         public void Atualizar(string conteudo)
         {
             Conteudo = conteudo;
-        }
-
-        public void Remover()
-        {
-            Situacao = "Excluido";
         }
     }
 }

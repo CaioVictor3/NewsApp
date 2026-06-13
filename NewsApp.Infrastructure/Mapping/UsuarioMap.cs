@@ -18,7 +18,6 @@ namespace NewsApp.Infrastructure.Mapping
             builder.Property(c => c.DataNascimento);
             builder.Property(c => c.TipoUsuario).HasMaxLength(20);
             builder.Property(c => c.DataInclusao);
-            builder.Property(c => c.Situacao).HasColumnType("varchar(255)");
         }
     }
 }

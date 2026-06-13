@@ -89,7 +89,6 @@ namespace NewsApp.Infrastructure.Base
             //    AuditoriaContext.Auditoria.Add(new AuditoriaModel()
             //    {
             //        SessaoId = Guid.Parse(psSessaoId),
-            //        Situacao = pState,
             //        DataHora = DateTime.Now,
             //        Classe = lEntity!.Entity!.ToString()!,
             //        Chave = lgPrimaryKeyId,

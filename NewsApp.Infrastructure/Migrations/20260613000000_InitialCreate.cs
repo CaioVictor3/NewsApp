@@ -26,8 +26,7 @@ namespace NewsApp.Infrastructure.Migrations
                     UrlImagem = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: true),
                     DataPublicacao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Conteudo = table.Column<string>(type: "TEXT", nullable: true),
-                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Situacao = table.Column<string>(type: "varchar(255)", nullable: true)
+                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,8 +47,7 @@ namespace NewsApp.Infrastructure.Migrations
                     CPF = table.Column<string>(type: "TEXT", maxLength: 14, nullable: true),
                     DataNascimento = table.Column<DateTime>(type: "TEXT", nullable: true),
                     TipoUsuario = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
-                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Situacao = table.Column<string>(type: "varchar(255)", nullable: true)
+                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,8 +64,7 @@ namespace NewsApp.Infrastructure.Migrations
                     DataComentario = table.Column<DateTime>(type: "TEXT", nullable: false),
                     IdUsuario = table.Column<int>(type: "INTEGER", nullable: false),
                     IdNoticia = table.Column<int>(type: "INTEGER", nullable: false),
-                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Situacao = table.Column<string>(type: "varchar(255)", nullable: true)
+                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,8 +91,7 @@ namespace NewsApp.Infrastructure.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     IdUsuario = table.Column<int>(type: "INTEGER", nullable: false),
                     IdNoticia = table.Column<int>(type: "INTEGER", nullable: false),
-                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Situacao = table.Column<string>(type: "varchar(255)", nullable: true)
+                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
