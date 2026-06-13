@@ -63,3 +63,17 @@ All protected by JWT. Duplicate (user+news) prevented by unique index.
 - Namespace leak: several Domain files use `Proclin.Models` (from a former project template).
 - `package-lock.json` refers to `AppNews` (old name) — no real Node deps.
 - `libman.json` at `NewsApp.Api/libman.json` is empty / unused.
+
+## Node.js backend (`backendNode/`)
+
+Simplified Express reimplementation of the same API, written in TypeScript.
+
+```bash
+cd backendNode
+npm install
+npm run dev      # dev with hot-reload (tsx watch)
+npm run build    # compile to dist/
+npm start        # run compiled dist/server.js
+```
+
+Single-process, synchronous SQLite (`better-sqlite3`). Same endpoints and `Response<T>` shape as the .NET API. JWT secret matches the C# one for dev convenience. Swagger UI at `http://localhost:3000/api-docs`. No test suite.
