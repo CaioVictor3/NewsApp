@@ -30,24 +30,23 @@ namespace NewsApp.Application.Services
             if (request.IdNoticia <= 0)
                 throw new Exception("Notícia inválida.");
 
-            var usuarioExiste = await _context.Usuario.AnyAsync(x => x.IdUsuario == request.IdUsuario);
-            if (!usuarioExiste)
+            var usuario = await _context.Usuario.FirstOrDefaultAsync(x => x.IdUsuario == request.IdUsuario);
+            if (usuario == null)
                 throw new Exception("Usuário não encontrado.");
 
             var noticia = await _context.Noticia
-                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.IdNoticia == request.IdNoticia);
 
             if (noticia == null)
                 throw new Exception("Notícia não encontrada.");
 
-            var jaFavoritado = await _context.Favorito
-                .AnyAsync(x => x.IdUsuario == request.IdUsuario && x.IdNoticia == request.IdNoticia);
+            var favoritoExistente = await _context.Favorito
+                .FirstOrDefaultAsync(x => x.IdUsuario == request.IdUsuario && x.IdNoticia == request.IdNoticia);
 
-            if (jaFavoritado)
+            if (favoritoExistente != null)
                 throw new Exception("Notícia já favoritada.");
 
-            var favorito = new Favorito(request.IdUsuario, request.IdNoticia);
+            var favorito = new Favorito(usuario, noticia);
 
             _context.Favorito.Add(favorito);
             await _context.SaveChangesAsync();

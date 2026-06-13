@@ -11,10 +11,10 @@ namespace NewsApp.Domain
 
         public Favorito() { }
 
-        public Favorito(int idUsuario, int idNoticia)
+        public Favorito(Usuario usuario, Noticia noticia)
         {
-            IdUsuario = idUsuario;
-            IdNoticia = idNoticia;
+            Usuario = usuario;
+            Noticia = noticia;
             DataInclusao = DateTime.Now;
         }
     }

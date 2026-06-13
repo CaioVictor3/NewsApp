@@ -26,15 +26,15 @@ namespace NewsApp.Application.Services
 
             ValidarRequest(request.IdUsuario, request.IdNoticia, request.Comentario);
 
-            var usuarioExiste = await _context.Usuario.AnyAsync(x => x.IdUsuario == request.IdUsuario);
-            if (!usuarioExiste)
+            var usuario = await _context.Usuario.FirstOrDefaultAsync(x => x.IdUsuario == request.IdUsuario);
+            if (usuario == null)
                 throw new Exception("Usuário não encontrado.");
 
-            var noticiaExiste = await _context.Noticia.AnyAsync(x => x.IdNoticia == request.IdNoticia);
-            if (!noticiaExiste)
+            var noticia = await _context.Noticia.FirstOrDefaultAsync(x => x.IdNoticia == request.IdNoticia);
+            if (noticia == null)
                 throw new Exception("Notícia não encontrada.");
 
-            var comentario = new Comentario(request.IdUsuario, request.IdNoticia, request.Comentario);
+            var comentario = new Comentario(usuario, noticia, request.Comentario);
 
             _context.Comentario.Add(comentario);
             await _context.SaveChangesAsync();

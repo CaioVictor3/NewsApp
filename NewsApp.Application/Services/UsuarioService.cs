@@ -59,8 +59,8 @@ namespace NewsApp.Application.Services
                 Data = new UsuarioResponseModel()
             };
 
-            var checkUsuario = await _context.Usuario.AnyAsync(x => x.Login == request.Login);
-            if (checkUsuario)
+            var usuarioExistente = await _context.Usuario.FirstOrDefaultAsync(x => x.Login == request.Login);
+            if (usuarioExistente != null)
                 throw new Exception("Usuário já cadastrado.");
 
             var usuario = new Usuario(

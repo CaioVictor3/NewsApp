@@ -13,10 +13,10 @@ namespace NewsApp.Domain
 
         public Comentario() { }
 
-        public Comentario(int idUsuario, int idNoticia, string conteudo)
+        public Comentario(Usuario usuario, Noticia noticia, string conteudo)
         {
-            IdUsuario = idUsuario;
-            IdNoticia = idNoticia;
+            Usuario = usuario;
+            Noticia = noticia;
             Conteudo = conteudo;
             DataComentario = DateTime.Now;
             DataInclusao = DateTime.Now;
